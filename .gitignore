@@ -1,0 +1,34 @@
+### JetBrains (IntelliJ, WebStorm 등) ###
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+### Eclipse ###
+.metadata/
+.classpath
+.project
+.settings/
+*.launch
+
+### Gradle ###
+.gradle/
+build/
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.nextDevelopmentVersion
+pom.xml.warn
+pom.xml.usedoverrides
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Application Settings (민감정보 보호) ###
+# 만약 DB 비번 등이 기록된 설정 파일을 숨기고 싶다면 아래 주석을 해제하세요.
+# src/main/resources/application.properties
+# src/main/resources/application.yml
