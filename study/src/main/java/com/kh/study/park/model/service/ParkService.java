@@ -31,7 +31,8 @@ public class ParkService {
 		return apiResponse;
 	}
 
-	public String findByNo(int manageNo) {
+	public String findByNo(String manageNo) {
+		System.out.println(manageNo);
 		String url = "https://api.data.go.kr/openapi/tn_pubr_public_cty_park_info_api?serviceKey=6f970256c2b27b3546884d705b3fc806bc519904b675b417927a91c8ae702b31&type=json";
 		url += "&MANAGE_NO=" + manageNo;
 		

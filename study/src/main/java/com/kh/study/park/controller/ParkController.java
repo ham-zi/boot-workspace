@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,10 +31,15 @@ public class ParkController {
 	
 	//단일조회 MANAGE_NO
 	@GetMapping("/{no}")
-	public ResponseEntity<String> findByNo(@PathVariable(value="no")int manageNo) {
+	public ResponseEntity<String> findByNo(@PathVariable(value="no")String manageNo) {
 		String park = parkService.findByNo(manageNo);
 		return ResponseEntity.ok(park);
 		
 	}
+	
+	//@PutMapping  = 전체 수정 => 요청 받을 때 DTO 모든 필드에 값이 존재해야함 
+	
+	//@PatchMapping = 부분 수정 => 요청 받을 때 DTO 바꾸고 싶은 필드만 값이 존재해도 됨 
+	
 	
 }
