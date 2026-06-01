@@ -27,8 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin("*")
 public class MemberController {
 	
-	@Autowired
-	private MemberService service; 
+	private final MemberService service; 
 	
 	@PostMapping
 	public Map<String, String> enroll(@RequestBody MemberDto member) {
