@@ -1,6 +1,8 @@
 package com.kh.fruit.user.model.service;
 
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,5 +51,18 @@ public class UserService {
 				                      .build();	
 		return userInfo;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public List<UserDto> findAll() {
+		return mapper.findAll();
+		
+	}
+	
 	
 }

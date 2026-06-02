@@ -1,5 +1,7 @@
 package com.kh.fruit.user.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -15,4 +17,7 @@ public interface UserMapper {
 
 	@Select("SELECT COUNT(*) FROM FRUIT_USER WHERE USER_ID = #{userId}")
 	public int countUserId(String userId);
+
+	@Select("SELECT * FROM FRUIT_USER ORDER BY USER_NO DESC")
+	public List<UserDto> findAll();
 }
