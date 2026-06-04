@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.semi.auth.model.dto.LoginRequestDto;
+import com.kh.semi.auth.model.dto.LoginResponse;
 import com.kh.semi.auth.model.service.AuthService;
 import com.kh.semi.member.model.dto.MemberDto;
 
@@ -23,8 +24,8 @@ public class AuthController {
 		
 		@PostMapping("/login")
 		public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto lrd) {
-			authService.login(lrd);
-			log.info("1");
-			return null;
+			LoginResponse res = authService.login(lrd);
+			log.info("res:{}", res);
+			return ResponseEntity.ok(res);
 		}
 }

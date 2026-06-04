@@ -9,13 +9,22 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.kh.semi.configuration.filter.JwtFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	
+	private final JwtFilter jwtFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,7 +50,15 @@ public class SecurityConfig {
 				   .authorizeHttpRequests(requests -> {
 					   // POST방식으로 /members라는 요청이 오면 권한 체크 안하고 전부 허용
 					   requests.requestMatchers(HttpMethod.POST, "/api/members", "/api/auth/login").permitAll();
-				   }).build();
+					   // Patch방식으로 /api/members라는 요청이 오면 로그인 인증이 된건가?? 체크
+					   requests.requestMatchers(HttpMethod.PATCH, "/api/members").authenticated();
+					   requests.requestMatchers(HttpMethod.DELETE, "/api/members").authenticated();
+					   
+				   }).sessionManagement(manager -> 
+				   						manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				   .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+				   .build();
+		
 				
 		// 오히려 더 객체를  더 부르고 복잡한데 왜 굳이 새로운 문법을 낸걸까?
 		// 기존 문법에 에 무슨 문제가 있었나??
