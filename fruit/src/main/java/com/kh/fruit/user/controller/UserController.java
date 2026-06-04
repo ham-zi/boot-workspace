@@ -34,15 +34,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body("성공");
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping
 	public ResponseEntity<List<UserDto>> findAll() {
 		List<UserDto>users = service.findAll();
