@@ -10,6 +10,7 @@ import com.kh.fruit.token.model.dao.TokenMapper;
 import com.kh.fruit.token.model.vo.RefreshToken;
 import com.kh.fruit.token.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +48,10 @@ public class TokenService {
 			if(token == null || token.getExpiration() < System.currentTimeMillis()) {
 				throw new CustomAuthenticationException("유효하지 않은 토큰입니다.");
 			}
+			Claims claims = tokenUtil.parseJwt(token.getToken());
+			String userId = claims.getSubject();
+			CustomUserDetails user = CustomUserDetails.builder().username(userId).build();
+            return createTokens(user);	
 		}
 		
 }

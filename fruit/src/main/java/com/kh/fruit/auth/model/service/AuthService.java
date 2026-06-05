@@ -28,7 +28,7 @@ public class AuthService {
 	private final AuthenticationManager manager;
 	private final TokenService tokenService;
 	
-	public void login(@Valid LoginRequest lr) {
+	public LoginResponse login(@Valid LoginRequest lr) {
 
 		Authentication auth = null;
 		

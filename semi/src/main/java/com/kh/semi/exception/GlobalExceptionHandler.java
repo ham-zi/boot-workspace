@@ -1,5 +1,6 @@
 package com.kh.semi.exception;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(CustomAuthenticationException.class)
 	public ResponseEntity<ErrorResponse> handlerCustomAuthentication(CustomAuthenticationException e) {
+		return ResponseEntity.badRequest().body(new ErrorResponse(400, e.getMessage(), null));
+	}
+	
+	@ExceptionHandler(InvalidParameterException.class)
+	public ResponseEntity<ErrorResponse> handlerInvalidParameter(InvalidParameterException e) {
 		return ResponseEntity.badRequest().body(new ErrorResponse(400, e.getMessage(), null));
 	}
 	
