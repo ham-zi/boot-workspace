@@ -1,31 +1,34 @@
-package com.kh.semi.auth.controller;
+package com.kh.fruit.auth.controller;
 
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.semi.auth.model.dto.LoginRequestDto;
-import com.kh.semi.auth.model.dto.LoginResponse;
-import com.kh.semi.auth.model.service.AuthService;
-import com.kh.semi.member.model.dto.MemberDto;
+import com.kh.fruit.auth.model.dto.LoginRequest;
+import com.kh.fruit.auth.model.service.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
-@Slf4j
 @RequiredArgsConstructor
 public class AuthController {
-		private final AuthService authService;
+
+	private final AuthService authService;
+	
+	@PostMapping("login")
+	public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest lr) {
 		
-		@PostMapping("/login")
-		public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto lrd) {
-			LoginResponse res = authService.login(lrd);
-			log.info("res:{}", res);
-			return ResponseEntity.ok(res);
-		}
+		authService.login(lr);
+
+		
+		return ResponseEntity.ok().build();
+	}
+
 }

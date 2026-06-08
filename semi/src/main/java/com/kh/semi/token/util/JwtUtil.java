@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.kh.semi.auth.model.vo.CustomUserDetails;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -45,13 +46,31 @@ public class JwtUtil {
 		return Jwts.builder()
 				   .subject(user.getUsername())
 		           .issuedAt(new Date())
-		           .expiration(Date.from(Instant.now().plus(Duration.ofMinutes(15))))
+		           .expiration(Date.from(Instant.now().plus(Duration.ofMinutes(540))))
 		           .claim("memberName", user.getMemberName())
 		           .signWith(key)
 		           .compact();
 		//.expiration(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMinutes(15)))
         //.expiration(new Date(System.currentTimeMillis()+(1000*60*15))).compact();
 		// 다른 토큰을 만들경우 3일 일주일 만드는데, 가독성이 더 좋음
+	}
+
+	public String getRefreshToken(CustomUserDetails user) {
+		return Jwts.builder()
+				   .subject(user.getUsername())
+		           .issuedAt(new Date())
+		           .expiration(Date.from(Instant.now().plus(Duration.ofDays(5))))
+		           .claim("memberName", user.getMemberName())
+		           .signWith(key)
+		           .compact();
+	}
+	
+	public Claims parseJwt(String token) {
+		return Jwts.parser()
+				   .verifyWith(key)
+				   .build()
+				   .parseSignedClaims(token)
+				   .getPayload();
 	}
 	
 }

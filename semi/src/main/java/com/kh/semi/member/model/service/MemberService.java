@@ -4,12 +4,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.semi.auth.model.vo.CustomUserDetails;
+import com.kh.semi.exception.CustomAuthenticationException;
 import com.kh.semi.exception.DuplicateMemberIdException;
 import com.kh.semi.exception.FailSignUpException;
 import com.kh.semi.member.model.dao.MemberMapper;
 import com.kh.semi.member.model.dto.MemberDto;
+import com.kh.semi.member.model.dto.UpdatePasswordDto;
 import com.kh.semi.member.model.vo.Member;
+import com.kh.semi.token.model.dao.TokenMapper;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +26,7 @@ public class MemberService {
 
 	private final MemberMapper memberMapper; 
 	private final PasswordEncoder passwordEncoder;
+	private final TokenMapper tokenMapper;
 	
 	/*
 	 * SQL문 두 번 수행하는데, 셀렉1 인서트1번
@@ -77,6 +83,33 @@ public class MemberService {
 		// 
 		if(1 > result) {
 			throw new FailSignUpException("잠시 후 다시 시도해주세요.");
+		}
+	}
+
+	@Transactional
+	public void changePassword(CustomUserDetails user, @Valid UpdatePasswordDto upd) {
+		
+		// 사용자가 입력한 기존 비밀번호 평문, DB에 저장된 기존 비밀번호 암모훈
+		String memberPwd = upd.getMemberPwd();
+		String encodedPwd = user.getPassword();
+		
+		validatePassword(memberPwd, encodedPwd);
+		
+		String newPassword = passwordEncoder.encode(upd.getUpdatePwd());
+		
+		memberMapper.changePassword(user.getUsername(), newPassword);
+		
+	}
+	@Transactional
+	public void deleteByPassword(String password, CustomUserDetails user) {
+		validatePassword(password,user.getPassword());
+		memberMapper.deleteByPassword(user.getUsername());
+		tokenMapper.deleteToken(user.getUsername());
+	}
+	
+	private void validatePassword(String rawPassword, String encodedPassword) {
+		if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
+			throw new CustomAuthenticationException("비밀번호가 틀렸습니다.");
 		}
 	}
 }
