@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ds.security.board.model.dao.BoardMapper">
+ 	<insert id="save">
+ 	<selectKey order="AFTER" resultType="Long" keyProperty="boardNo">
+ 		SELECT MAX(BOARD_NO) FROM DS_BOARD
+ 	</selectKey>
+ 		INSERT
+ 		  INTO
+ 		       DS_BOARD
+ 		VALUES
+ 		       (
+			   SEQ_DS_BNO.NEXTVAL
+			 , #{refMno}
+			 , #{boardTitle}
+			 , #{boardContent}
+			 , SYSDATE
+			 , #{axistFile}
+			 , 0
+			 , 'Y'
+			   )
+ 	</insert>
+ 	
+ 	<insert id="saveFile">
+ 		INSERT
+ 		  INTO
+ 		       DS_FILE
+ 		VALUES
+ 		       (
+			   SEQ_DS_FNO.NEXTVAL
+			 , #{refBno}
+			 , #{originName}
+			 , #{changeName}
+			 , #{filePath}
+			 , #{fileLevel}
+			   )
+ 	</insert>
+ 	
+  </mapper>

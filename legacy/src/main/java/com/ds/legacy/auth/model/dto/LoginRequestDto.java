@@ -1,11 +1,6 @@
-package com.ds.legacy.member.model.dto;
+package com.ds.legacy.auth.model.dto;
 
-import java.sql.Date;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,14 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class MemberDto {
-	  private Long userNo;
+public class LoginRequestDto {
 	  @NotBlank(message="아이디를 입력해주세요.")
 	  @Pattern(regexp="^[a-zA-Z0-9]*$", message="아이디는 영어/숫자만 가능합니다.")
 	  @Size(min=4, max=20, message="아이디는 4글자 이상, 20글자 이하만 가능합니다. ")
@@ -30,15 +23,4 @@ public class MemberDto {
 	  @Pattern(regexp="^[a-zA-Z0-9]*$", message="비밀번호는 영어/숫자만 가능합니다.")
 	  @Size(min=4, max=20, message="비밀번호는 4글자이상, 20글자 이하만 가능합니다.")
 	  private String userPwd;
-	  @NotBlank(message="이름을 입력해주세요.")
-	  @Pattern(regexp="^[a-zA-Z0-9가-힣]*$", message="이름은 영어/숫자/한글만 가능합니다.")
-	  @Size(min=2, max=10, message="이름은 2글자이상, 20글자이하만 가능합니다.")
-	  private String userName; 
-	  @Email
-	  @NotBlank(message="이메일을 입력해주세요")
-	  private String email;
-	  private String role;
-	  private Date enrollDate;
-	  private Date modifyDate;
-	  private String status;
 }
