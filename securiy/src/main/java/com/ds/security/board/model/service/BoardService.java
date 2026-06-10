@@ -24,6 +24,12 @@ public class BoardService {
 	private final BoardMapper boardMapper;
 	private final FileService fileService;
 	
+	
+	
+	public List<BoardDto> findAll(int page){
+		
+	}
+	
 	@Transactional
 	public void save(CustomUserDetails user, List<MultipartFile>files, BoardDto boardDto) {
 		BoardDto board = replaceBoard(boardDto);

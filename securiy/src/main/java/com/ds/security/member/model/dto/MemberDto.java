@@ -30,6 +30,7 @@ public class MemberDto {
 	@Size(min=2, max=20, message="이름는 글자 2개 이상, 20개 이하 입력해주세요.")
 	@Pattern(regexp="^[a-zA-Z0-9가-힣]*$", message="이름은 영어와 숫자, 한글만 입력 가능합니다.")
 	private String userName;
+	@NotBlank(message="이메일을 입력해주세요")
 	private String email;
 	private String role;
 	private Date enrollDate;
