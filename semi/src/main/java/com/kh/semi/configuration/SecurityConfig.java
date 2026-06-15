@@ -57,13 +57,16 @@ public class SecurityConfig {
 				   .cors(Customizer.withDefaults())
 				   .authorizeHttpRequests(requests -> {
 					   // POST방식으로 /members라는 요청이 오면 권한 체크 안하고 전부 허용
-					   requests.requestMatchers(HttpMethod.POST, "/api/members", "/api/auth/login").permitAll();
+					   requests.requestMatchers(HttpMethod.POST, "/api/members", "/api/auth/login", "/api/auth/refresh").permitAll();
 					   // Patch방식으로 /api/members라는 요청이 오면 로그인 인증이 된건가?? 체크
 					   requests.requestMatchers(HttpMethod.PATCH, "/api/members", "/api/boards/**").authenticated();
 					   requests.requestMatchers(HttpMethod.DELETE, "/api/members", "/api/boards/**").authenticated();
 					   requests.requestMatchers(HttpMethod.POST, "/api/boards","api/comments").authenticated();
-					   requests.requestMatchers(HttpMethod.GET, "/api/boards/**", "/api/comments/**","/uploads/**").permitAll();
-					   
+					   requests.requestMatchers(HttpMethod.GET, "/api/boards/**", "/api/comments/**","/uploads/**","/api/boards", "/api/auth/logout").permitAll();
+					   requests.requestMatchers("/api/admin").hasRole("ADMIN");// 시큐리티가 자동으로 앞에 ROLE_ 접두사를 붙혀줌
+					   requests.requestMatchers("/api/admin").hasAnyAuthority("ROLE_ADMIN"); // ROLE이 완전히 똑같아야 한다.
+					   requests.requestMatchers("/api/admin").hasAnyRole("ADMIN","USER"); // 이것들 중 하나라도 있으면이라는 의미, 앞에 ROLE_접두사를 붙혀줌
+
 				   }).sessionManagement(manager -> 
 				   						manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

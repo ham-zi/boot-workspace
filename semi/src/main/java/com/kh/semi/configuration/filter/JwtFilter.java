@@ -34,7 +34,12 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 		String uri = request.getRequestURI();
-		return uri.equals("/api/auth/login") || uri.equals("/api/auth/refresh");
+		String method = request.getMethod();
+		
+		if("GET".equals(method) && uri.startsWith("/api/boards")) return true;
+		if("GET".equals(method) && uri.startsWith("/api/comments")) return true;
+		
+		return uri.equals("/api/auth/login") || uri.equals("/api/auth/refresh"); 
 	}
 	
 	// 여기 안에서 반환하는 경로들은 필터를 아예 안거치게 하는 메소드
@@ -59,8 +64,10 @@ public class JwtFilter extends OncePerRequestFilter {
 		*/
 		
 		String token = authorization.substring(7);
+		System.out.println("JWT 필터진입");
 		try {			
 			Claims claims = jwtUtil.parseJwt(token);
+			System.out.println("토큰 검증 성공");
 			String username = claims.getSubject();
 			//log.info("토큰 소유주의 PK: {}", username);
 			
@@ -73,7 +80,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			// 요렇게 담아주면 현재 요청이 만료될때까지 Authentication에 담겨있는 사용자의 정보를 사용할 수 있음
 		} catch (ExpiredJwtException e) {
-			//log.info("토큰의 유효기간 만료");
+			log.info("토큰의 유효기간 만료");
 			response.setStatus(401);
 			response.setContentType("application/json; charset=UTF-8");
 			response.getWriter().write("토큰만료");
@@ -81,9 +88,9 @@ public class JwtFilter extends OncePerRequestFilter {
 		} catch(JwtException e) {
 			response.setStatus(401);
 			response.setContentType("application/json; charset=UTF-8");
-			response.getWriter().write("토큰만료");
+			response.getWriter().write("토3큰3만료3");
+			log.info("이 서버의 서비스키로 만든 토큰이 아님");
 			return;
-			//log.info("이 서버의 서비스키로 만든 토큰이 아님");
 		}
 		
 		filterChain.doFilter(request, response);

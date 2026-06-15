@@ -65,7 +65,9 @@ public class TokenService {
 		String memberId = claims.getSubject();
 		String memberName = (String)claims.get("memberName");
 		CustomUserDetails user = CustomUserDetails.builder().memberName(memberName).username(memberId).build();
-		return createTokens(user);
+		Map<String,String> tokens = createTokens(user);
+		saveToken(tokens.get("refreshToken"),memberId);
+		return tokens;
 	}
 	
 	

@@ -41,5 +41,14 @@ public class LocalFileService implements FileService{
 			throw new RuntimeException("이상한 파일");
 		}
 	}
+	
+	//이름변경 
+	private String changeName(String originName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("unknown_");
+		sb.append(1);
+		return null;
+	}
+	
 
 }
